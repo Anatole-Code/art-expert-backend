@@ -1,0 +1,76 @@
+{{define "artworks-tile"}}
+<article class="artwork-tile">
+    <a href="{{.ArtworkFeedURL}}">
+        <img src="{{.ArtworkFileBase}}/{{.ArtworkImageKey}}" alt="{{.ArtworkTitle}}">
+        <video src="{{.ArtworkFileBase}}/{{.ArtworkVideoKey}}" muted></video>
+        <h2>{{.ArtworkTitle}}</h2>
+    </a>
+    <p class="artwork-year-mark">{{.PainterName}}</p>
+    <p class="artwork-year-mark">{{.CreatedOn}} · {{.DiagonalCm}} см · ♥ {{.ConnoisseurMarkCount}}</p>
+</article>
+{{end}}
+
+{{define "artworks-created-on-tile-screen"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/artworks-screens/css/screen_artworks.css">
+</head>
+<body>
+<main>
+    <h1>Картины</h1>
+    <form class="created-on-form" method="get" action="/artworks-created-on-tile">
+        <label for="created_on">Дата создания (не позднее)</label>
+        <div class="created-on-line">
+            <input id="created_on" name="created_on" type="text" inputmode="numeric" placeholder="дд.мм.гггг" value="{{if .CreatedOn}}{{.CreatedOn}}{{else}}дд.мм.гггг{{end}}">
+            <details class="created-on-calendar" {{if .CalendarOpen}}open{{end}}>
+                <summary aria-label="Календарь">
+                    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+                        <rect x="1.5" y="2.5" width="13" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"></rect>
+                        <path d="M1.5 6.5h13M5 1.5v2.5M11 1.5v2.5" fill="none" stroke="currentColor" stroke-width="1.2"></path>
+                    </svg>
+                </summary>
+                <div class="created-on-panel">
+                    <div class="created-on-month">
+                        <a href="{{.CalendarPrev}}">‹</a>
+                        <span>
+                            {{if eq .CalendarView "days"}}<a href="{{.CalendarMonthHref}}">{{.CalendarMonthName}}</a> <a href="{{.CalendarYearHref}}">{{.CalendarYearLabel}}</a>{{else if eq .CalendarView "months"}}<a href="{{.CalendarYearHref}}">{{.CalendarYearLabel}}</a>{{else}}{{.CalendarYearLabel}}{{end}}
+                        </span>
+                        <a href="{{.CalendarNext}}">›</a>
+                    </div>
+                    {{if eq .CalendarView "days"}}
+                    <div class="created-on-weekdays">
+                        <span>пн</span><span>вт</span><span>ср</span><span>чт</span><span>пт</span><span>сб</span><span>вс</span>
+                    </div>
+                    <div class="created-on-days">
+                        {{range .CalendarCells}}{{if .Href}}<a class="{{if .Chosen}}is-chosen{{end}}" href="{{.Href}}">{{.Label}}</a>{{else}}<span></span>{{end}}{{end}}
+                    </div>
+                    {{else}}
+                    <div class="created-on-choices">
+                        {{range .CalendarCells}}<a class="{{if .Chosen}}is-chosen{{end}}" href="{{.Href}}">{{.Label}}</a>{{end}}
+                    </div>
+                    {{end}}
+                </div>
+            </details>
+        </div>
+        <button type="submit">Показать</button>
+    </form>
+    {{if .ArtworkTiles}}
+    <div class="created-on-tile-grid">
+        {{range .ArtworkTiles}}{{template "artworks-tile" .}}{{end}}
+    </div>
+    {{else}}
+    <p class="artwork-screen-hint">Опубликованных картин не позже этой даты нет.</p>
+    {{end}}
+</main>
+<nav class="artwork-screen-tabs" aria-label="Разделы картин">
+    <a class="{{if eq .ArtworkTab "artworks-feed"}}is-current{{end}}" href="/artworks">Лента</a>
+    <a class="{{if eq .ArtworkTab "artworks-draft-form"}}is-current{{end}}" href="/artworks-draft-form">Добавление</a>
+    <a class="{{if eq .ArtworkTab "artworks-created-on-tile"}}is-current{{end}}" href="/artworks-created-on-tile">Плитка</a>
+</nav>
+</body>
+</html>
+{{end}}

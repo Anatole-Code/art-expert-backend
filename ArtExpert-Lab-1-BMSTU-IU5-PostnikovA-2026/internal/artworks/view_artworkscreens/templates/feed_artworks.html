@@ -1,0 +1,49 @@
+{{define "artworks-feed-screen"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/artworks-screens/css/screen_artworks.css">
+</head>
+<body>
+{{if .ArtworkMissing}}
+<main>
+    <h1>Картина не найдена</h1>
+    <p class="artwork-screen-hint">В ленте нет такой опубликованной картины.</p>
+    <img src="/artworks-default/default-artwork.jpg" alt="Изображение по умолчанию">
+    <video src="/artworks-default/default-artwork.mp4" muted></video>
+    <p><a href="/artworks-created-on-tile">К плитке</a></p>
+</main>
+{{else}}
+<main class="artwork-feed-main">
+    <article class="artwork-feed">
+        <div class="artwork-feed-frame">
+        <video src="{{.ArtworkFileBase}}/{{.Artwork.ArtworkVideoKey}}" poster="{{.ArtworkFileBase}}/{{.Artwork.ArtworkImageKey}}" autoplay muted loop playsinline></video>
+        <div class="artwork-feed-caption">
+            <h1>{{.Artwork.ArtworkTitle}}</h1>
+            <p>{{.Artwork.PainterName}}</p>
+            <details class="attribution-note">
+                <summary><span class="more-label">Больше</span><span class="less-label">Меньше</span></summary>
+                <p>{{.Artwork.AttributionNote}}</p>
+            </details>
+        </div>
+        <aside class="artwork-feed-facts">
+            <p>Дата создания<br>{{.Artwork.CreatedOn}}</p>
+            <p>Диагональ, см<br>{{.Artwork.DiagonalCm}}</p>
+            <p>♥<br>{{.Artwork.ConnoisseurMarkCount}}</p>
+            <a class="next-artwork-feed" href="{{.Artwork.NextArtworkFeedURL}}">Следующая</a>
+        </aside>
+        </div>
+    </article>
+</main>
+{{end}}
+<nav class="artwork-screen-tabs" aria-label="Разделы картин">
+    <a class="{{if eq .ArtworkTab "artworks-feed"}}is-current{{end}}" href="/artworks">Лента</a>
+    <a class="{{if eq .ArtworkTab "artworks-draft-form"}}is-current{{end}}" href="/artworks-draft-form">Добавление</a>
+    <a class="{{if eq .ArtworkTab "artworks-created-on-tile"}}is-current{{end}}" href="/artworks-created-on-tile">Плитка</a>
+</nav>
+</body>
+</html>
+{{end}}

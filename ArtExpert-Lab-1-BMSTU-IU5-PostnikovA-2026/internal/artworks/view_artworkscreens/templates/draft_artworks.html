@@ -1,0 +1,55 @@
+{{define "artworks-draft-form-screen"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/artworks-screens/css/screen_artworks.css">
+</head>
+<body>
+<main>
+    <h1>Заявка на экспертизу</h1>
+    <p class="artwork-screen-hint">Поля можно заполнить. В этой лабораторной запись не выполняется.</p>
+    <form class="artwork-draft-form" method="get" action="/artworks-draft-form">
+        <div class="artwork-draft-media">
+            <div class="artwork-file-window">
+                <img src="{{.ArtworkFileBase}}/{{.Artwork.ArtworkImageKey}}" alt="{{.Artwork.ArtworkTitle}}">
+                <span>Изображение</span>
+                <div class="artwork-file-pick">
+                    <input id="artwork_image_file" type="file" accept="image/*">
+                    <label for="artwork_image_file">Выберите файл</label>
+                    <span>Файл не выбран</span>
+                </div>
+            </div>
+            <div class="artwork-file-window">
+                <video src="{{.ArtworkFileBase}}/{{.Artwork.ArtworkVideoKey}}" controls></video>
+                <span>Видео</span>
+                <div class="artwork-file-pick">
+                    <input id="artwork_video_file" type="file" accept="video/*">
+                    <label for="artwork_video_file">Выберите файл</label>
+                    <span>Файл не выбран</span>
+                </div>
+            </div>
+        </div>
+        <div class="artwork-draft-fields">
+            <label for="artwork_title">Предположительное название</label>
+            <input id="artwork_title" name="artwork_title" type="text" value="{{.DraftArtworkTitle}}">
+            <label for="attribution_note">Предположительный автор</label>
+            <input id="attribution_note" name="attribution_note" type="text" value="{{.DraftAttributionNote}}">
+            <label for="created_on">Предположительная дата создания</label>
+            <input id="created_on" name="created_on" type="text" value="{{.DraftCreatedOn}}">
+            <label for="diagonal_cm">Диагональ, см</label>
+            <input id="diagonal_cm" name="diagonal_cm" type="number" value="{{.DraftDiagonal}}">
+            <button type="submit">Отправить заявку</button>
+        </div>
+    </form>
+</main>
+<nav class="artwork-screen-tabs" aria-label="Разделы картин">
+    <a class="{{if eq .ArtworkTab "artworks-feed"}}is-current{{end}}" href="/artworks">Лента</a>
+    <a class="{{if eq .ArtworkTab "artworks-draft-form"}}is-current{{end}}" href="/artworks-draft-form">Добавление</a>
+    <a class="{{if eq .ArtworkTab "artworks-created-on-tile"}}is-current{{end}}" href="/artworks-created-on-tile">Плитка</a>
+</nav>
+</body>
+</html>
+{{end}}
