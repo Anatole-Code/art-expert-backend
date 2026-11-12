@@ -13,5 +13,26 @@ services:
       - minio-data:/data
     command: server /data --console-address ":9001"
 
+  postgres:
+    container_name: artwork_postgres
+    image: postgres:16
+    environment:
+      POSTGRES_USER: connoisseur
+      POSTGRES_PASSWORD: connoisseurpassword
+      POSTGRES_DB: artworks
+    ports:
+      - "5433:5432"
+    volumes:
+      - artwork-postgres-data:/var/lib/postgresql/data
+
+  adminer:
+    container_name: artwork_adminer
+    image: adminer:latest
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+
 volumes:
   minio-data:
+  artwork-postgres-data:

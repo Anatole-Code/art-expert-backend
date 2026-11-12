@@ -130,6 +130,18 @@ main > h1 { margin: 0 0 4px; font-size: 22px; }
     overflow: hidden;
 }
 
+.artwork-remove-form {
+    flex: 0 0 auto;
+    margin: 1px 4px 2px;
+}
+
+.artwork-remove-form button {
+    min-height: 0;
+    padding: 1px 4px;
+    font-size: 8px;
+    line-height: 1.2;
+}
+
 .created-on-form, .artwork-draft-form {
     display: flex;
     flex-direction: column;
@@ -308,6 +320,7 @@ main > h1 { margin: 0 0 4px; font-size: 22px; }
 
 body:has(.artwork-draft-form) main {
     padding: 4px 10px 2px;
+    overflow: auto;
 }
 
 body:has(.artwork-draft-form) main > h1 {
@@ -499,6 +512,27 @@ button:hover {
 }
 
 .artwork-screen-hint { font-size: 12px; line-height: 1.25; margin: 0 0 4px; }
+
+.artwork-missing-frame {
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    background: #f3f3f3;
+}
+
+.artwork-missing-frame img,
+.artwork-missing-frame video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.artwork-missing-frame video {
+    opacity: 0;
+}
 
 .artwork-screen-tabs {
     flex: 0 0 var(--tab-height);

@@ -1,6 +1,7 @@
 package controller_artworkscreens
 
 import (
+	"errors"
 	"io/fs"
 	"net/http"
 	"net/url"
@@ -13,17 +14,21 @@ import (
 )
 
 type ArtworkTileView struct {
-	ArtworkTitle        string
+	ArtworkTitle         string
 	AttributionNote      string
 	CreatedOn            string
 	DiagonalCm           int
 	PainterName          string
-	ArtworkFileBase     string
-	ArtworkImageKey     string
-	ArtworkVideoKey     string
+	ArtworkFileBase      string
+	ArtworkImageKey      string
+	ArtworkVideoKey      string
+	ArtworkImageSrc      string
+	ArtworkVideoSrc      string
 	ConnoisseurMarkCount int
-	ArtworkFeedURL      string
-	NextArtworkFeedURL  string
+	ArtworkFeedURL       string
+	NextArtworkFeedURL   string
+	ArtworkID            int
+	FilterCreatedOn      string
 }
 
 type ArtworkCalendarCell struct {
@@ -34,10 +39,10 @@ type ArtworkCalendarCell struct {
 
 type ArtworkScreenData struct {
 	Title                string
-	ArtworkTab          string
-	ArtworkFileBase     string
-	ArtworkTiles        []ArtworkTileView
-	Artwork             ArtworkTileView
+	ArtworkTab           string
+	ArtworkFileBase      string
+	ArtworkTiles         []ArtworkTileView
+	Artwork              ArtworkTileView
 	CreatedOn            string
 	CalendarOpen         bool
 	CalendarView         string
@@ -48,10 +53,13 @@ type ArtworkScreenData struct {
 	CalendarMonthName    string
 	CalendarYearLabel    string
 	CalendarCells        []ArtworkCalendarCell
-	DraftArtworkTitle   string
+	DraftArtworkTitle    string
 	DraftAttributionNote string
 	DraftCreatedOn       string
 	DraftDiagonal        string
+	DraftFormAction      string
+	DraftSubmitLabel     string
+	DraftFormError       string
 	ArtworkMissing       bool
 }
 
@@ -82,7 +90,7 @@ func (screens *ArtworkScreens) showCreatedOnTile(w http.ResponseWriter, r *http.
 		Title:             "Плитка картин",
 		ArtworkTab:        "artworks-created-on-tile",
 		ArtworkFileBase:   mediaBase,
-		ArtworkTiles:      screens.artworkTileViews(published, mediaBase),
+		ArtworkTiles:      screens.artworkTileViews(published, mediaBase, shownDate),
 		CreatedOn:         shownDate,
 		CalendarOpen:      r.URL.Query().Get("calendar") != "",
 		CalendarView:      view,
@@ -134,22 +142,8 @@ func (screens *ArtworkScreens) showArtworkFeed(w http.ResponseWriter, r *http.Re
 }
 
 func (screens *ArtworkScreens) showArtworkDraftForm(w http.ResponseWriter, r *http.Request) {
-	artwork, ok := screens.artworkLookup.OnlyArtworkDraft()
-	if !ok {
-		screens.showMissingArtwork(w)
-		return
-	}
-	mediaBase := screens.mediaBase()
-	screen := ArtworkScreenData{
-		Title:                "Заявка на экспертизу",
-		ArtworkTab:          "artworks-draft-form",
-		ArtworkFileBase:     mediaBase,
-		Artwork:             screens.artworkTileView(artwork, mediaBase),
-		DraftArtworkTitle:   artwork.ArtworkTitle,
-		DraftAttributionNote: artwork.AttributionNote,
-		DraftCreatedOn:       artwork.CreatedOn.Format("02.01.2006"),
-		DraftDiagonal:        strconv.Itoa(artwork.DiagonalCm),
-	}
+	artwork, ready := screens.artworkLookup.OnlyArtworkDraft()
+	screen := screens.draftForm(artwork, ready)
 	query := r.URL.Query()
 	if _, sent := query["artwork_title"]; sent {
 		screen.DraftArtworkTitle = query.Get("artwork_title")
@@ -158,6 +152,108 @@ func (screens *ArtworkScreens) showArtworkDraftForm(w http.ResponseWriter, r *ht
 		screen.DraftDiagonal = query.Get("diagonal_cm")
 	}
 	screens.writeArtworkScreen(w, "artworks-draft-form-screen", screen)
+}
+
+func (screens *ArtworkScreens) createArtworkDraft(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "форма черновика не прочитана", http.StatusBadRequest)
+		return
+	}
+	title := strings.TrimSpace(r.FormValue("artwork_title"))
+	_, err := screens.artworkLookup.CreateArtworkDraft(title)
+	if err == nil {
+		http.Redirect(w, r, "/artworks-draft-form", http.StatusSeeOther)
+		return
+	}
+	if errors.Is(err, model_artworks.ErrArtworkDraftExists) {
+		http.Redirect(w, r, "/artworks-draft-form", http.StatusSeeOther)
+		return
+	}
+	screen := screens.draftForm(model_artworks.ArtworkAttribution{}, false)
+	screen.DraftArtworkTitle = title
+	screen.DraftFormError = "Укажите название картины."
+	w.WriteHeader(http.StatusBadRequest)
+	screens.writeArtworkScreen(w, "artworks-draft-form-screen", screen)
+}
+
+func (screens *ArtworkScreens) publishArtworkDraft(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "форма публикации не прочитана", http.StatusBadRequest)
+		return
+	}
+	note := strings.TrimSpace(r.FormValue("attribution_note"))
+	createdOn, dateOK := parseArtworkDate(r.FormValue("created_on"))
+	diagonal, diagonalErr := strconv.Atoi(strings.TrimSpace(r.FormValue("diagonal_cm")))
+	draft, ready := screens.artworkLookup.OnlyArtworkDraft()
+	if !ready {
+		http.Redirect(w, r, "/artworks-draft-form", http.StatusSeeOther)
+		return
+	}
+	if note == "" || !dateOK || diagonalErr != nil || diagonal <= 0 {
+		screen := screens.draftForm(draft, true)
+		screen.DraftAttributionNote = r.FormValue("attribution_note")
+		screen.DraftCreatedOn = r.FormValue("created_on")
+		screen.DraftDiagonal = r.FormValue("diagonal_cm")
+		screen.DraftFormError = "Для публикации нужны описание, дата написания и диагональ."
+		w.WriteHeader(http.StatusBadRequest)
+		screens.writeArtworkScreen(w, "artworks-draft-form-screen", screen)
+		return
+	}
+	published, err := screens.artworkLookup.PublishArtworkDraft(note, createdOn, diagonal)
+	if err != nil {
+		http.Redirect(w, r, "/artworks-draft-form", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/artworks/"+strconv.Itoa(published.ArtworkID), http.StatusSeeOther)
+}
+
+func (screens *ArtworkScreens) removeArtwork(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "форма удаления не прочитана", http.StatusBadRequest)
+		return
+	}
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		screens.showMissingArtwork(w)
+		return
+	}
+	if err := screens.artworkLookup.RemovePublishedArtwork(id); err != nil {
+		screens.showMissingArtwork(w)
+		return
+	}
+	target := "/artworks-created-on-tile"
+	if createdOn := strings.TrimSpace(r.FormValue("created_on")); createdOn != "" {
+		target += "?created_on=" + url.QueryEscape(createdOn)
+	}
+	http.Redirect(w, r, target, http.StatusSeeOther)
+}
+
+func (screens *ArtworkScreens) draftForm(artwork model_artworks.ArtworkAttribution, ready bool) ArtworkScreenData {
+	mediaBase := screens.mediaBase()
+	screen := ArtworkScreenData{
+		Title:            "Заявка на экспертизу",
+		ArtworkTab:       "artworks-draft-form",
+		ArtworkFileBase:  mediaBase,
+		DraftFormAction:  "/artworks-draft-form/next",
+		DraftSubmitLabel: "Далее",
+	}
+	if !ready {
+		screen.Artwork.ArtworkImageSrc = defaultArtworkImageSrc
+		screen.Artwork.ArtworkVideoSrc = defaultArtworkVideoSrc
+		return screen
+	}
+	screen.Artwork = screens.artworkTileView(artwork, mediaBase)
+	screen.DraftArtworkTitle = artwork.ArtworkTitle
+	screen.DraftAttributionNote = artwork.AttributionNote
+	if !artwork.CreatedOn.IsZero() {
+		screen.DraftCreatedOn = artwork.CreatedOn.Format("02.01.2006")
+	}
+	if artwork.DiagonalCm != 0 {
+		screen.DraftDiagonal = strconv.Itoa(artwork.DiagonalCm)
+	}
+	screen.DraftFormAction = "/artworks-draft-form/publish"
+	screen.DraftSubmitLabel = "Опубликовать"
+	return screen
 }
 
 func (screens *ArtworkScreens) showMissingArtwork(w http.ResponseWriter) {
@@ -176,10 +272,12 @@ func (screens *ArtworkScreens) writeArtworkScreen(w http.ResponseWriter, name st
 	}
 }
 
-func (screens *ArtworkScreens) artworkTileViews(published []model_artworks.ArtworkAttribution, mediaBase string) []ArtworkTileView {
+func (screens *ArtworkScreens) artworkTileViews(published []model_artworks.ArtworkAttribution, mediaBase, shownDate string) []ArtworkTileView {
 	tiles := make([]ArtworkTileView, 0, len(published))
 	for _, artwork := range published {
-		tiles = append(tiles, screens.artworkTileView(artwork, mediaBase))
+		tile := screens.artworkTileView(artwork, mediaBase)
+		tile.FilterCreatedOn = shownDate
+		tiles = append(tiles, tile)
 	}
 	return tiles
 }
@@ -194,12 +292,44 @@ var artworkStorageReachable = func(base string) bool {
 	return response.StatusCode == http.StatusOK
 }
 
+const (
+	defaultArtworkImageSrc = "/artworks-default/default-artwork.jpg"
+	defaultArtworkVideoSrc = "/artworks-default/default-artwork.mp4"
+)
+
 func (screens *ArtworkScreens) mediaBase() string {
 	root := strings.TrimRight(screens.artworkFileBase, "/")
 	if root != "" && artworkStorageReachable(root) {
 		return root + "/artworks"
 	}
 	return "/artworks-default"
+}
+
+var artworkFileReachable = func(fileURL string) bool {
+	request, err := http.NewRequest(http.MethodHead, fileURL, nil)
+	if err != nil {
+		return false
+	}
+	client := &http.Client{Timeout: 400 * time.Millisecond}
+	response, err := client.Do(request)
+	if err != nil {
+		return false
+	}
+	defer response.Body.Close()
+	return response.StatusCode == http.StatusOK
+}
+
+func (screens *ArtworkScreens) artworkMediaSrc(key, fallback string) string {
+	key = strings.TrimSpace(key)
+	base := screens.mediaBase()
+	if key == "" || !strings.HasPrefix(base, "http") {
+		return fallback
+	}
+	fileURL := base + "/" + key
+	if !artworkFileReachable(fileURL) {
+		return fallback
+	}
+	return fileURL
 }
 
 var artworkMonthNames = [...]string{
@@ -301,16 +431,19 @@ func parseArtworkDate(raw string) (time.Time, bool) {
 func (screens *ArtworkScreens) artworkTileView(artwork model_artworks.ArtworkAttribution, mediaBase string) ArtworkTileView {
 	feedURL := "/artworks/" + strconv.Itoa(artwork.ArtworkID)
 	return ArtworkTileView{
-		ArtworkTitle:        artwork.ArtworkTitle,
+		ArtworkTitle:         artwork.ArtworkTitle,
 		AttributionNote:      artwork.AttributionNote,
 		CreatedOn:            artwork.CreatedOn.Format("02.01.2006"),
 		DiagonalCm:           artwork.DiagonalCm,
 		PainterName:          artwork.PainterName,
-		ArtworkFileBase:     mediaBase,
-		ArtworkImageKey:     artwork.ArtworkImageKey,
-		ArtworkVideoKey:     artwork.ArtworkVideoKey,
+		ArtworkFileBase:      mediaBase,
+		ArtworkImageKey:      artwork.ArtworkImageKey,
+		ArtworkVideoKey:      artwork.ArtworkVideoKey,
+		ArtworkImageSrc:      screens.artworkMediaSrc(artwork.ArtworkImageKey, defaultArtworkImageSrc),
+		ArtworkVideoSrc:      screens.artworkMediaSrc(artwork.ArtworkVideoKey, defaultArtworkVideoSrc),
 		ConnoisseurMarkCount: len(artwork.MarkConnoisseurIDs),
-		ArtworkFeedURL:      feedURL,
-		NextArtworkFeedURL:  feedURL + "?next=true",
+		ArtworkFeedURL:       feedURL,
+		NextArtworkFeedURL:   feedURL + "?next=true",
+		ArtworkID:            artwork.ArtworkID,
 	}
 }

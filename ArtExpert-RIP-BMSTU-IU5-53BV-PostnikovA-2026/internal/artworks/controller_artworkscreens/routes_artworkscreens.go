@@ -10,13 +10,13 @@ import (
 )
 
 type ArtworkScreens struct {
-	artworkLookup   *model_artworks.MemoryArtworkLookup
+	artworkLookup   model_artworks.ArtworkLookup
 	artworkFileBase string
 	artworkTmpl     *template.Template
 	openedOn        time.Time
 }
 
-func OpenArtworkScreens(artworkLookup *model_artworks.MemoryArtworkLookup, artworkFileBase, artworkDefaultDir string, openedOn time.Time) http.Handler {
+func OpenArtworkScreens(artworkLookup model_artworks.ArtworkLookup, artworkFileBase, artworkDefaultDir string, openedOn time.Time) http.Handler {
 	screens := &ArtworkScreens{
 		artworkLookup:   artworkLookup,
 		artworkFileBase: artworkFileBase,
@@ -30,7 +30,10 @@ func OpenArtworkScreens(artworkLookup *model_artworks.MemoryArtworkLookup, artwo
 	artworkMux.HandleFunc("GET /artworks", screens.showArtworkFeed)
 	artworkMux.HandleFunc("GET /artworks/{id}", screens.showArtworkFeed)
 	artworkMux.HandleFunc("GET /artworks-draft-form", screens.showArtworkDraftForm)
+	artworkMux.HandleFunc("POST /artworks-draft-form/next", screens.createArtworkDraft)
+	artworkMux.HandleFunc("POST /artworks-draft-form/publish", screens.publishArtworkDraft)
 	artworkMux.HandleFunc("GET /artworks-created-on-tile", screens.showCreatedOnTile)
+	artworkMux.HandleFunc("POST /artworks/{id}/remove", screens.removeArtwork)
 	style, err := artworkStyleFS()
 	if err != nil {
 		panic(err)

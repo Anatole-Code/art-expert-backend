@@ -1,0 +1,1065 @@
+{
+	"_type": "Project",
+	"_id": "prj",
+	"name": "ArtExpert",
+	"ownedElements": [
+		{
+			"_type": "ERDDataModel",
+			"_id": "dm",
+			"_parent": {
+				"$ref": "prj"
+			},
+			"name": "База картин",
+			"ownedElements": [
+				{
+					"_type": "ERDDiagram",
+					"_id": "dia",
+					"_parent": {
+						"$ref": "dm"
+					},
+					"name": "Картины, знатоки, отметки",
+					"defaultDiagram": true,
+					"ownedViews": [
+						{
+							"_type": "ERDEntityView",
+							"_id": "view-c",
+							"_parent": {
+								"$ref": "dia"
+							},
+							"model": {
+								"$ref": "ent-c"
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "view-c-name",
+									"_parent": {
+										"$ref": "view-c"
+									},
+									"font": "Arial;13;1",
+									"parentStyle": true,
+									"left": 288,
+									"top": 357,
+									"width": 250.7841796875,
+									"height": 13,
+									"text": "connoisseurs"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "view-c-cols",
+									"_parent": {
+										"$ref": "view-c"
+									},
+									"model": {
+										"$ref": "ent-c"
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-c-id",
+											"_parent": {
+												"$ref": "view-c-cols"
+											},
+											"model": {
+												"$ref": "col-c-id"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 293,
+											"top": 380,
+											"width": 240.7841796875,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-c-login",
+											"_parent": {
+												"$ref": "view-c-cols"
+											},
+											"model": {
+												"$ref": "col-c-login"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 293,
+											"top": 395,
+											"width": 240.7841796875,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 288,
+									"top": 375,
+									"width": 250.7841796875,
+									"height": 38
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 288,
+							"top": 352,
+							"width": 250.7841796875,
+							"height": 78,
+							"nameLabel": {
+								"$ref": "view-c-name"
+							},
+							"columnCompartment": {
+								"$ref": "view-c-cols"
+							}
+						},
+						{
+							"_type": "ERDEntityView",
+							"_id": "view-a",
+							"_parent": {
+								"$ref": "dia"
+							},
+							"model": {
+								"$ref": "ent-a"
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "view-a-name",
+									"_parent": {
+										"$ref": "view-a"
+									},
+									"font": "Arial;13;1",
+									"parentStyle": true,
+									"left": 400,
+									"top": 29,
+									"width": 360,
+									"height": 13,
+									"text": "artworks"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "view-a-cols",
+									"_parent": {
+										"$ref": "view-a"
+									},
+									"model": {
+										"$ref": "ent-a"
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-1",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-id"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 52,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-2",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-title"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 67,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-3",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-note"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 82,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-4",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-status"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 97,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-5",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-image"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 112,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-6",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-video"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 127,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-7",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-created"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 142,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-8",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-diagonal"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 157,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-9",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-painter"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 172,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-10",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-recorded"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 187,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-11",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-connoisseur"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 202,
+											"width": 350,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-a-12",
+											"_parent": {
+												"$ref": "view-a-cols"
+											},
+											"model": {
+												"$ref": "col-a-formed"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 405,
+											"top": 217,
+											"width": 350,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 400,
+									"top": 47,
+									"width": 360,
+									"height": 188
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 400,
+							"top": 24,
+							"width": 360,
+							"height": 250,
+							"nameLabel": {
+								"$ref": "view-a-name"
+							},
+							"columnCompartment": {
+								"$ref": "view-a-cols"
+							}
+						},
+						{
+							"_type": "ERDEntityView",
+							"_id": "view-m",
+							"_parent": {
+								"$ref": "dia"
+							},
+							"model": {
+								"$ref": "ent-m"
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "view-m-name",
+									"_parent": {
+										"$ref": "view-m"
+									},
+									"font": "Arial;13;1",
+									"parentStyle": true,
+									"left": 632,
+									"top": 349,
+									"width": 300,
+									"height": 13,
+									"text": "artwork_marks"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "view-m-cols",
+									"_parent": {
+										"$ref": "view-m"
+									},
+									"model": {
+										"$ref": "ent-m"
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-m-1",
+											"_parent": {
+												"$ref": "view-m-cols"
+											},
+											"model": {
+												"$ref": "col-m-id"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 637,
+											"top": 372,
+											"width": 290,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-m-2",
+											"_parent": {
+												"$ref": "view-m-cols"
+											},
+											"model": {
+												"$ref": "col-m-artwork"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 637,
+											"top": 387,
+											"width": 290,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "view-m-3",
+											"_parent": {
+												"$ref": "view-m-cols"
+											},
+											"model": {
+												"$ref": "col-m-connoisseur"
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 637,
+											"top": 402,
+											"width": 290,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 632,
+									"top": 367,
+									"width": 300,
+									"height": 53
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 632,
+							"top": 344,
+							"width": 300,
+							"height": 96,
+							"nameLabel": {
+								"$ref": "view-m-name"
+							},
+							"columnCompartment": {
+								"$ref": "view-m-cols"
+							}
+						},
+						{
+							"_type": "ERDRelationshipView",
+							"_id": "view-rel-creator",
+							"_parent": {
+								"$ref": "dia"
+							},
+							"model": {
+								"$ref": "rel-creator"
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "view-rel-creator-name",
+									"_parent": {
+										"$ref": "view-rel-creator"
+									},
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 368,
+									"top": 307,
+									"width": 65,
+									"height": 13,
+									"alpha": 0,
+									"distance": 0,
+									"hostEdge": {
+										"$ref": "view-rel-creator"
+									},
+									"edgePosition": 1,
+									"text": "RESTRICT"
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "view-rel-creator-tail",
+									"_parent": {
+										"$ref": "view-rel-creator"
+									},
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 400,
+									"top": 346,
+									"height": 13,
+									"alpha": 0,
+									"distance": 0,
+									"hostEdge": {
+										"$ref": "view-rel-creator"
+									},
+									"edgePosition": 2
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "view-rel-creator-head",
+									"_parent": {
+										"$ref": "view-rel-creator"
+									},
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 400,
+									"top": 307,
+									"height": 13,
+									"alpha": 0,
+									"distance": 0,
+									"hostEdge": {
+										"$ref": "view-rel-creator"
+									},
+									"edgePosition": 3
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"head": {
+								"$ref": "view-a"
+							},
+							"tail": {
+								"$ref": "view-c"
+							},
+							"lineStyle": 2,
+							"points": "400:352;400:274",
+							"nameLabel": {
+								"$ref": "view-rel-creator-name"
+							},
+							"tailNameLabel": {
+								"$ref": "view-rel-creator-tail"
+							},
+							"headNameLabel": {
+								"$ref": "view-rel-creator-head"
+							}
+						},
+						{
+							"_type": "ERDRelationshipView",
+							"_id": "view-rel-marker",
+							"_parent": {
+								"$ref": "dia"
+							},
+							"model": {
+								"$ref": "rel-marker"
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "view-rel-marker-name",
+									"_parent": {
+										"$ref": "view-rel-marker"
+									},
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 553,
+									"top": 385,
+									"width": 65,
+									"height": 13,
+									"alpha": 0,
+									"distance": 0,
+									"hostEdge": {
+										"$ref": "view-rel-marker"
+									},
+									"edgePosition": 1,
+									"text": "RESTRICT"
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "view-rel-marker-tail",
+									"_parent": {
+										"$ref": "view-rel-marker"
+									},
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 539,
+									"top": 385,
+									"height": 13,
+									"alpha": 0,
+									"distance": 0,
+									"hostEdge": {
+										"$ref": "view-rel-marker"
+									},
+									"edgePosition": 2
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "view-rel-marker-head",
+									"_parent": {
+										"$ref": "view-rel-marker"
+									},
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 585,
+									"top": 385,
+									"height": 13,
+									"alpha": 0,
+									"distance": 0,
+									"hostEdge": {
+										"$ref": "view-rel-marker"
+									},
+									"edgePosition": 3
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"head": {
+								"$ref": "view-m"
+							},
+							"tail": {
+								"$ref": "view-c"
+							},
+							"lineStyle": 2,
+							"points": "539:391;632:391",
+							"nameLabel": {
+								"$ref": "view-rel-marker-name"
+							},
+							"tailNameLabel": {
+								"$ref": "view-rel-marker-tail"
+							},
+							"headNameLabel": {
+								"$ref": "view-rel-marker-head"
+							}
+						},
+						{
+							"_type": "ERDRelationshipView",
+							"_id": "view-rel-marked",
+							"_parent": {
+								"$ref": "dia"
+							},
+							"model": {
+								"$ref": "rel-marked"
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "view-rel-marked-name",
+									"_parent": {
+										"$ref": "view-rel-marked"
+									},
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 728,
+									"top": 303,
+									"width": 65,
+									"height": 13,
+									"alpha": 0,
+									"distance": 0,
+									"hostEdge": {
+										"$ref": "view-rel-marked"
+									},
+									"edgePosition": 1,
+									"text": "RESTRICT"
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "view-rel-marked-tail",
+									"_parent": {
+										"$ref": "view-rel-marked"
+									},
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 760,
+									"top": 268,
+									"height": 13,
+									"alpha": 0,
+									"distance": 0,
+									"hostEdge": {
+										"$ref": "view-rel-marked"
+									},
+									"edgePosition": 2
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "view-rel-marked-head",
+									"_parent": {
+										"$ref": "view-rel-marked"
+									},
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 760,
+									"top": 303,
+									"height": 13,
+									"alpha": 0,
+									"distance": 0,
+									"hostEdge": {
+										"$ref": "view-rel-marked"
+									},
+									"edgePosition": 3
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"head": {
+								"$ref": "view-m"
+							},
+							"tail": {
+								"$ref": "view-a"
+							},
+							"lineStyle": 2,
+							"points": "760:274;760:344",
+							"nameLabel": {
+								"$ref": "view-rel-marked-name"
+							},
+							"tailNameLabel": {
+								"$ref": "view-rel-marked-tail"
+							},
+							"headNameLabel": {
+								"$ref": "view-rel-marked-head"
+							}
+						},
+						{
+							"_type": "UMLTextView",
+							"_id": "AAAAAAGhq61XpWvh3No=",
+							"_parent": {
+								"$ref": "dia"
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 657,
+							"top": 527,
+							"width": 100,
+							"height": 25,
+							"text": "Text"
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "ent-c",
+					"_parent": {
+						"$ref": "dm"
+					},
+					"name": "connoisseurs",
+					"documentation": "Пользователи курса. Знаток — создатель картины и автор отметки.",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "col-c-id",
+							"_parent": {
+								"$ref": "ent-c"
+							},
+							"name": "connoisseur_id",
+							"type": "INTEGER",
+							"length": 0,
+							"primaryKey": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-c-login",
+							"_parent": {
+								"$ref": "ent-c"
+							},
+							"name": "connoisseur_login",
+							"type": "VARCHAR",
+							"length": "50",
+							"unique": true
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "ent-a",
+					"_parent": {
+						"$ref": "dm"
+					},
+					"name": "artworks",
+					"ownedElements": [
+						{
+							"_type": "ERDRelationship",
+							"_id": "rel-creator",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "RESTRICT",
+							"documentation": "Создатель картины. Каскадное удаление запрещено.",
+							"end1": {
+								"_type": "ERDRelationshipEnd",
+								"_id": "rel-creator-1",
+								"_parent": {
+									"$ref": "rel-creator"
+								},
+								"reference": {
+									"$ref": "ent-c"
+								}
+							},
+							"end2": {
+								"_type": "ERDRelationshipEnd",
+								"_id": "rel-creator-2",
+								"_parent": {
+									"$ref": "rel-creator"
+								},
+								"reference": {
+									"$ref": "ent-a"
+								},
+								"cardinality": "0..*"
+							}
+						}
+					],
+					"documentation": "Картина. Статус: artwork_draft, artwork_published, artwork_removed. У одного знатока не больше одной картины в статусе artwork_draft. created_on и diagonal_cm — два поля темы. recorded_at — дата создания записи, note_formed_at — дата формирования. ON DELETE RESTRICT.",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-id",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "artwork_id",
+							"type": "INTEGER",
+							"length": 0,
+							"primaryKey": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-title",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "artwork_title",
+							"type": "VARCHAR",
+							"length": "120"
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-note",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "attribution_note",
+							"type": "VARCHAR",
+							"length": "500",
+							"nullable": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-status",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "artwork_status",
+							"type": "VARCHAR",
+							"length": "32"
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-image",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "artwork_image_url",
+							"type": "VARCHAR",
+							"length": "300",
+							"nullable": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-video",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "artwork_video_url",
+							"type": "VARCHAR",
+							"length": "300",
+							"nullable": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-created",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "created_on",
+							"type": "DATE",
+							"length": 0,
+							"nullable": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-diagonal",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "diagonal_cm",
+							"type": "INTEGER",
+							"length": 0,
+							"nullable": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-painter",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "painter_name",
+							"type": "VARCHAR",
+							"length": "80",
+							"nullable": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-recorded",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "recorded_at",
+							"type": "TIMESTAMP",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-connoisseur",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "connoisseur_id",
+							"type": "INTEGER",
+							"length": 0,
+							"foreignKey": true,
+							"referenceTo": {
+								"$ref": "col-c-id"
+							}
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-a-formed",
+							"_parent": {
+								"$ref": "ent-a"
+							},
+							"name": "note_formed_at",
+							"type": "TIMESTAMP",
+							"length": 0,
+							"nullable": true
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "ent-m",
+					"_parent": {
+						"$ref": "dm"
+					},
+					"name": "artwork_marks",
+					"ownedElements": [
+						{
+							"_type": "ERDRelationship",
+							"_id": "rel-marker",
+							"_parent": {
+								"$ref": "ent-m"
+							},
+							"name": "RESTRICT",
+							"documentation": "Знаток, поставивший отметку. Каскадное удаление запрещено.",
+							"end1": {
+								"_type": "ERDRelationshipEnd",
+								"_id": "rel-marker-1",
+								"_parent": {
+									"$ref": "rel-marker"
+								},
+								"reference": {
+									"$ref": "ent-c"
+								}
+							},
+							"end2": {
+								"_type": "ERDRelationshipEnd",
+								"_id": "rel-marker-2",
+								"_parent": {
+									"$ref": "rel-marker"
+								},
+								"reference": {
+									"$ref": "ent-m"
+								},
+								"cardinality": "0..*"
+							}
+						},
+						{
+							"_type": "ERDRelationship",
+							"_id": "rel-marked",
+							"_parent": {
+								"$ref": "ent-m"
+							},
+							"name": "RESTRICT",
+							"documentation": "Картина, которой поставлена отметка. Каскадное удаление запрещено.",
+							"end1": {
+								"_type": "ERDRelationshipEnd",
+								"_id": "rel-marked-1",
+								"_parent": {
+									"$ref": "rel-marked"
+								},
+								"reference": {
+									"$ref": "ent-a"
+								}
+							},
+							"end2": {
+								"_type": "ERDRelationshipEnd",
+								"_id": "rel-marked-2",
+								"_parent": {
+									"$ref": "rel-marked"
+								},
+								"reference": {
+									"$ref": "ent-m"
+								},
+								"cardinality": "0..*"
+							}
+						}
+					],
+					"documentation": "Отметки, связь многие-ко-многим знаток—картина. Свой первичный ключ и два внешних. Пара (artwork_id, connoisseur_id) уникальна. ON DELETE RESTRICT.",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "col-m-id",
+							"_parent": {
+								"$ref": "ent-m"
+							},
+							"name": "artwork_mark_id",
+							"type": "INTEGER",
+							"length": 0,
+							"primaryKey": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-m-artwork",
+							"_parent": {
+								"$ref": "ent-m"
+							},
+							"name": "artwork_id",
+							"type": "INTEGER",
+							"length": 0,
+							"foreignKey": true,
+							"referenceTo": {
+								"$ref": "col-a-id"
+							}
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "col-m-connoisseur",
+							"_parent": {
+								"$ref": "ent-m"
+							},
+							"name": "connoisseur_id",
+							"type": "INTEGER",
+							"length": 0,
+							"foreignKey": true,
+							"referenceTo": {
+								"$ref": "col-c-id"
+							}
+						}
+					]
+				}
+			],
+			"documentation": "Лабораторная 2. Три таблицы. Каскадное удаление запрещено: внешние ключи с ON DELETE RESTRICT."
+		}
+	],
+	"documentVersion": 8
+}

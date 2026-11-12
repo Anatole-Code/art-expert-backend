@@ -10,11 +10,11 @@
 <body>
 <main>
     <h1>Заявка на экспертизу</h1>
-    <p class="artwork-screen-hint">Поля можно заполнить. В этой лабораторной запись не выполняется.</p>
-    <form class="artwork-draft-form" method="get" action="/artworks-draft-form">
+    {{if .DraftFormError}}<p class="artwork-screen-hint">{{.DraftFormError}}</p>{{end}}
+    <form class="artwork-draft-form" method="post" action="{{.DraftFormAction}}">
         <div class="artwork-draft-media">
             <div class="artwork-file-window">
-                <img src="{{.ArtworkFileBase}}/{{.Artwork.ArtworkImageKey}}" alt="{{.Artwork.ArtworkTitle}}">
+                <img src="{{.Artwork.ArtworkImageSrc}}" alt="{{.Artwork.ArtworkTitle}}">
                 <span>Изображение</span>
                 <div class="artwork-file-pick">
                     <input id="artwork_image_file" type="file" accept="image/*">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="artwork-file-window">
-                <video src="{{.ArtworkFileBase}}/{{.Artwork.ArtworkVideoKey}}" controls></video>
+                <video src="{{.Artwork.ArtworkVideoSrc}}" controls></video>
                 <span>Видео</span>
                 <div class="artwork-file-pick">
                     <input id="artwork_video_file" type="file" accept="video/*">
@@ -41,7 +41,7 @@
             <input id="created_on" name="created_on" type="text" value="{{.DraftCreatedOn}}">
             <label for="diagonal_cm">Диагональ, см</label>
             <input id="diagonal_cm" name="diagonal_cm" type="number" value="{{.DraftDiagonal}}">
-            <button type="submit">Отправить заявку</button>
+            <button type="submit">{{.DraftSubmitLabel}}</button>
         </div>
     </form>
 </main>

@@ -1,12 +1,16 @@
 {{define "artworks-tile"}}
 <article class="artwork-tile">
     <a href="{{.ArtworkFeedURL}}">
-        <img src="{{.ArtworkFileBase}}/{{.ArtworkImageKey}}" alt="{{.ArtworkTitle}}">
-        <video src="{{.ArtworkFileBase}}/{{.ArtworkVideoKey}}" muted></video>
+        <img src="{{.ArtworkImageSrc}}" alt="{{.ArtworkTitle}}">
+        <video src="{{.ArtworkVideoSrc}}" muted></video>
         <h2>{{.ArtworkTitle}}</h2>
     </a>
     <p class="artwork-year-mark">{{.PainterName}}</p>
     <p class="artwork-year-mark">{{.CreatedOn}} · {{.DiagonalCm}} см · ♥ {{.ConnoisseurMarkCount}}</p>
+    <form class="artwork-remove-form" method="post" action="/artworks/{{.ArtworkID}}/remove">
+        <input type="hidden" name="created_on" value="{{.FilterCreatedOn}}">
+        <button type="submit">Удалить</button>
+    </form>
 </article>
 {{end}}
 
